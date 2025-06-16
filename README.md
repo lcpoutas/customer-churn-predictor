@@ -1,118 +1,125 @@
-# 📉 Customer Churn Prediction App
+```markdown
+# 📉 Customer Churn Predictor App
 
-Esta aplicación permite predecir la probabilidad de abandono de clientes (`churn`) mediante un modelo de regresión logística entrenado con `SGDClassifier`. El usuario puede explorar los datos y realizar predicciones personalizadas a través de una interfaz interactiva construida con **Streamlit**.
+This application predicts the probability of customer churn using various Machine Learning models. Built with **Streamlit**, it allows users to interactively explore the data, select a model, and make real-time predictions.
 
 ---
 
-## 📁 Estructura del Proyecto
+## 🧠 Key Features
+
+✅ Predict churn with **9 different models**:
+
+- Random Forest (Ensemble)
+- LightGBM (Ensemble)
+- XGBoost (Ensemble)
+- KNN (Ensemble)
+- SGDClassifier (Optimized)
+- MLP (Neural Network)
+- SVM
+- Naive Bayes (Bernoulli, Multinomial, Gaussian)
+
+📊 Visual and interactive data exploration (EDA)
+
+🧪 Reproducible preprocessing pipeline: encoding, scaling, and column selection
+
+🚀 Compatible with Docker and local deployment
+
+---
+
+## 📁 Project Structure
 
 ```
 CustomerChurn_App/
-├── app.py                         # Punto de entrada de la app Streamlit
-├── prediction.py                  # Módulo para predicción personalizada
-├── EDA.py                         # Módulo para el análisis exploratorio
-├── requirements.txt               # Librerías necesarias
-├── Dockerfile                     # Archivo para la construcción del contenedor
-├── data/
-│   ├── billing.csv
-│   ├── clients.parquet
-│   ├── tenure.json
-│   ├── dataset_completo.parquet
-│   ├── dataset_encoded.parquet
-│   ├── prepared_dataset.parquet
-│   ├── modelo_final_SGD.pkl
-│   ├── encoder.pkl
-│   ├── scaler.pkl
-│   ├── cols_to_scale.pkl
-│   ├── columnas_entrenamiento.pkl
-│   ├── final_columns.pkl
-│   └── umbral_optimo_SGD.txt
-└── Notebooks/                     # Jupyter Notebooks de desarrollo
+├── app.py             # Main Streamlit entry point
+├── prediction.py      # Prediction logic and model selection
+├── EDA.py             # Exploratory data analysis interface
+├── requirements.txt   # Python dependencies
+├── Dockerfile         # Docker container configuration
+│
+├── models/            # Trained models (.pkl and .h5)
+│                     # (recommend using Git LFS)
+│
+├── data/              # Encoders, scalers, feature sets and processed datasets
+│
+└── Notebooks/         # Jupyter notebooks for development and experimentation
 ```
 
 ---
 
-## 🚀 Cómo Ejecutar el Proyecto
+## 🛠️ Technologies Used
 
-### ✅ Opción 1: Con Docker (Recomendado)
-
-1. **Construir la imagen Docker:**
-```bash
-docker build -t customer-churn-app .
-```
-
-2. **Ejecutar la app en el puerto 8502:**
-```bash
-docker run -p 8502:8502 customer-churn-app streamlit run app.py --server.port=8502 --server.address=0.0.0.0
-```
-
-3. **Abrir en el navegador:**
-[http://localhost:8502](http://localhost:8502)
+- `scikit-learn`, `imbalanced-learn`, `scikeras`
+- `tensorflow`, `xgboost`, `lightgbm`
+- `vaex`, `pandas`, `numpy`
+- `streamlit`, `plotly`, `seaborn`, `matplotlib`
+- `joblib`, `pyarrow`
+- `Docker`, `Git LFS`
 
 ---
 
-### ⚙️ Opción 2: Ejecutar Localmente (sin Docker)
+## 🚀 How to Run the App
 
-> Requiere Python 3.9+ y un entorno virtual
+### Option A: Docker (Recommended)
 
-1. **Crear y activar entorno:**
 ```bash
+# 1. Build the Docker image
+docker build -t churn-predictor-app .
+
+# 2. Run the app
+docker run -p 8502:8502 churn-predictor-app streamlit run app.py --server.port=8502 --server.address=0.0.0.0
+```
+
+Open in browser: [http://localhost:8502](http://localhost:8502)
+
+---
+
+### Option B: Run Locally (Without Docker)
+
+```bash
+# Create and activate virtual environment
 python -m venv venv
-source venv/bin/activate  # Linux/macOS
-venv\Scripts\activate     # Windows
-```
+source venv/bin/activate  # or venv\Scripts\activate on Windows
 
-2. **Instalar dependencias:**
-```bash
+# Install dependencies
 pip install -r requirements.txt
-```
 
-3. **Lanzar la app:**
-```bash
+# Run the app
 streamlit run app.py
 ```
 
 ---
 
-## 🧠 Funcionalidades Principales
+## ⚠️ Important Notes
 
-- **Exploración de datos (EDA)**: Gráficas, distribución de variables, análisis de churn por fecha, etc.
-- **Predicción personalizada**: Sección interactiva para introducir datos de un cliente y obtener predicción.
-- **Modelo robusto**:
-  - Entrenado con SGDClassifier y GridSearchCV
-  - Regularización L1 / L2 / ElasticNet
-  - Optimización del umbral de decisión (F1-score)
-- **Preprocesamiento reproducible**:
-  - Imputación de valores nulos
-  - One-Hot Encoding de variables categóricas
-  - Escalado de variables continuas
+- This project uses **Git LFS** to manage large model files (>100MB).
+  - Install from: [https://git-lfs.github.com](https://git-lfs.github.com)
+  - Then run: `git lfs install`
+
+- If you hit the LFS quota limit, consider storing models externally:
+  - Google Drive, Hugging Face Hub, or any cloud storage
 
 ---
 
-## 🧾 Requisitos
+## 📊 Model F1-Scores (Churn Class)
 
-Revisa el archivo [`requirements.txt`](./requirements.txt) para ver todas las dependencias, incluyendo:
-
-- `streamlit`
-- `scikit-learn`
-- `numpy`
-- `pandas`
-- `matplotlib`
-- `seaborn`
-- `plotly`
-- `vaex` (opcional para lectura rápida de datos)
-
----
-
-## 📌 Notas Técnicas
-
-- El modelo ha sido entrenado sobre un dataset de más de 318.000 registros.
-- El umbral de decisión fue ajustado a `0.465` tras analizar el F1-score.
-- Es imprescindible mantener los archivos `.pkl` y `.txt` del directorio `/data` para que la app funcione correctamente.
+| Model                    | F1 Score |
+|--------------------------|----------|
+| 🎯 Random Forest         | 0.994    |
+| KNN                      | 0.953    |
+| LightGBM                 | 0.944    |
+| MLP (Neural Network)     | 0.923    |
+| XGBoost                  | 0.828    |
+| SVM                      | 0.808    |
+| SGDClassifier            | 0.749    |
+| Naive Bayes (Bernoulli)  | 0.326    |
+| Naive Bayes (Multinomial)| 0.304    |
+| Naive Bayes (Gaussian)   | 0.230    |
 
 ---
 
-## 👨‍💻 Autor
+## 👨‍💻 Author
 
-Desarrollado como parte del curso de **Machine Learning** – Grado en Inteligencia Artificial  
-Contacto: Luis Carlos de Vicente Poutás – lcpoutas@gmail.com
+Developed by **Luis Carlos de Vicente Poutás**  
+🎓 Project for *Machine Learning* – Artificial Intelligence Bachelor's Degree  
+📫 Contact: `lcpoutas@gmail.com`
+```
