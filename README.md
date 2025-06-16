@@ -1,4 +1,3 @@
-```markdown
 # 📉 Customer Churn Predictor App
 
 This application predicts the probability of customer churn using various Machine Learning models. Built with **Streamlit**, it allows users to interactively explore the data, select a model, and make real-time predictions.
@@ -122,4 +121,3 @@ streamlit run app.py
 Developed by **Luis Carlos de Vicente Poutás**  
 🎓 Project for *Machine Learning* – Artificial Intelligence Bachelor's Degree  
 📫 Contact: `lcpoutas@gmail.com`
-```
